@@ -13,7 +13,6 @@
 
         .main-content { display: flex; flex: 1; overflow: hidden; flex-direction: row; }
 
-        /* جعل التصميم يستجيب للموبايل */
         @media (max-width: 768px) {
             .main-content { flex-direction: column; overflow-y: auto; }
             .cart-section { border-right: none !important; border-top: 2px solid #ddd; min-width: 100% !important; height: auto !important; }
@@ -42,11 +41,16 @@
         .add-btn { background-color: var(--main-green); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; }
         .checkout-btn { background-color: var(--accent-orange); color: white; border: none; padding: 15px; width: 100%; border-radius: 10px; cursor: pointer; display: none; margin-top: 10px; font-size: 1.1rem; font-weight: bold; }
 
-        /* مودال العنوان */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); }
         .modal-content { background: white; margin: 15% auto; padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; }
         .option-btn { background: #f8f9fa; border: 2px solid var(--main-green); padding: 12px; margin: 10px 0; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; }
         textarea { width: 100%; height: 80px; padding: 10px; border-radius: 10px; border: 1px solid #ccc; margin-top: 10px; box-sizing: border-box; }
+
+        /* ستايل لوحة التحكم الخاصة بصاحب المحل */
+        .admin-panel { background: #34495e; color: white; padding: 20px; margin-top: 50px; border-top: 5px solid var(--accent-orange); }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
+        .admin-item { background: #2c3e50; padding: 10px; border-radius: 5px; font-size: 0.8rem; }
+        .admin-item input { width: 80px; padding: 3px; }
     </style>
 </head>
 <body>
@@ -63,23 +67,23 @@
             <div class="product-card">
                 <img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6ced6?w=200" alt="تفاح">
                 <h4>تفاح أحمر</h4>
-                <p>1,000 د.ع / كغم</p>
+                <p><span id="price-apple">1000</span> د.ع / كغم</p>
                 <div class="qty-row"><input type="number" id="qty-apple" class="input-qty" value="1" min="1"> كغم</div>
-                <button class="add-btn" onclick="addItem('تفاح', 1000, 'qty-apple', 'كغم')">إضافة للسلة</button>
+                <button class="add-btn" onclick="addItem('تفاح', 'price-apple', 'qty-apple', 'كغم')">إضافة للسلة</button>
             </div>
             <div class="product-card">
                 <img src="https://images.unsplash.com/photo-1557800636-894a64c1696f?w=200" alt="برتقال">
                 <h4>برتقال طازج</h4>
-                <p>1,000 د.ع / كغم</p>
+                <p><span id="price-orange">1000</span> د.ع / كغم</p>
                 <div class="qty-row"><input type="number" id="qty-orange" class="input-qty" value="1" min="1"> كغم</div>
-                <button class="add-btn" onclick="addItem('برتقال', 1000, 'qty-orange', 'كغم')">إضافة للسلة</button>
+                <button class="add-btn" onclick="addItem('برتقال', 'price-orange', 'qty-orange', 'كغم')">إضافة للسلة</button>
             </div>
             <div class="product-card">
                 <img src="https://images.unsplash.com/photo-1528825871115-3581a5387919?w=200" alt="موز">
                 <h4>موز</h4>
-                <p>1,500 د.ع / كغم</p>
+                <p><span id="price-banana">1500</span> د.ع / كغم</p>
                 <div class="qty-row"><input type="number" id="qty-banana" class="input-qty" value="1" min="1"> كغم</div>
-                <button class="add-btn" onclick="addItem('موز', 1500, 'qty-banana', 'كغم')">إضافة للسلة</button>
+                <button class="add-btn" onclick="addItem('موز', 'price-banana', 'qty-banana', 'كغم')">إضافة للسلة</button>
             </div>
         </div>
 
@@ -88,20 +92,20 @@
             <div class="product-card">
                 <img src="https://images.unsplash.com/photo-1584622781564-1d9876a3e74e?w=200" alt="صابون">
                 <h4>سائل جلي (زاهي)</h4>
-                <p>1,250 د.ع</p>
-                <button class="add-btn" onclick="addFixedItem('سائل جلي', 1250)">إضافة للسلة</button>
+                <p><span id="price-zahi">1250</span> د.ع</p>
+                <button class="add-btn" onclick="addFixedItem('سائل جلي', 'price-zahi')">إضافة للسلة</button>
             </div>
             <div class="product-card">
                 <img src="https://images.unsplash.com/photo-1563453392212-326f5e854473?w=200" alt="شامبو">
                 <h4>شامبو عبوة</h4>
-                <p>3,500 د.ع</p>
-                <button class="add-btn" onclick="addFixedItem('شامبو', 3500)">إضافة للسلة</button>
+                <p><span id="price-shampoo">3500</span> د.ع</p>
+                <button class="add-btn" onclick="addFixedItem('شامبو', 'price-shampoo')">إضافة للسلة</button>
             </div>
             <div class="product-card">
                 <img src="https://images.unsplash.com/photo-1610557892470-55d9e80e0bce?w=200" alt="مسحوق غسيل">
                 <h4>مسحوق غسيل (1كغم)</h4>
-                <p>2,500 د.ع</p>
-                <button class="add-btn" onclick="addFixedItem('مسحوق غسيل', 2500)">إضافة للسلة</button>
+                <p><span id="price-powder">2500</span> د.ع</p>
+                <button class="add-btn" onclick="addFixedItem('مسحوق غسيل', 'price-powder')">إضافة للسلة</button>
             </div>
         </div>
 
@@ -110,38 +114,29 @@
             <div class="product-card">
                 <img src="https://images.unsplash.com/photo-1550583724-125581fe25b2?w=200" alt="حليب">
                 <h4>حليب لتر</h4>
-                <p>2,000 د.ع</p>
-                <button class="add-btn" onclick="addFixedItem('حليب لتر', 2000)">إضافة للسلة</button>
+                <p><span id="price-milk">2000</span> د.ع</p>
+                <button class="add-btn" onclick="addFixedItem('حليب لتر', 'price-milk')">إضافة للسلة</button>
             </div>
             <div class="product-card">
                 <img src="https://images.unsplash.com/photo-1528750955925-53f5a3ea2d3b?w=200" alt="جبن">
                 <h4>جبن مثلثات</h4>
-                <p>1,500 د.ع</p>
-                <button class="add-btn" onclick="addFixedItem('جبن مثلثات', 1500)">إضافة للسلة</button>
+                <p><span id="price-cheese">1500</span> د.ع</p>
+                <button class="add-btn" onclick="addFixedItem('جبن مثلثات', 'price-cheese')">إضافة للسلة</button>
             </div>
             <div class="product-card">
                 <img src="https://images.unsplash.com/photo-1485962391905-13ca0ec3e2c0?w=200" alt="لبن">
                 <h4>لبن (روبة)</h4>
-                <p>1,000 د.ع</p>
-                <button class="add-btn" onclick="addFixedItem('لبن روبة', 1000)">إضافة للسلة</button>
+                <p><span id="price-yogurt">1000</span> د.ع</p>
+                <button class="add-btn" onclick="addFixedItem('لبن روبة', 'price-yogurt')">إضافة للسلة</button>
             </div>
         </div>
-        <div class="category-title">🥜 قسم المكسرات</div>
-        <div class="products-grid">
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1511067007398-7e4b90cfa4bc?w=200" alt="فستق">
-                <h4>فستق حلبي</h4>
-                <p>5,000 د.ع / 250غم</p>
-                <div class="qty-row"><input type="number" id="qty-pistachio" class="input-qty" value="1" min="1"> وجبة</div>
-                <button class="add-btn" onclick="addItem('فستق حلبي', 5000, 'qty-pistachio', 'وجبة')">إضافة للسلة</button>
-            </div>
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1536591375315-1b8e9415477f?w=200" alt="لوز">
-                <h4>لوز محمص</h4>
-                <p>3,000 د.ع / 250غم</p>
-                <div class="qty-row"><input type="number" id="qty-almond" class="input-qty" value="1" min="1"> وجبة</div>
-                <button class="add-btn" onclick="addItem('لوز محمص', 3000, 'qty-almond', 'وجبة')">إضافة للسلة</button>
-            </div>
+
+        <div class="admin-panel">
+            <h3>⚙️ لوحة تحكم الإدارة (تعديل الأسعار)</h3>
+            <p>ملاحظة: هذه اللوحة تظهر لك فقط لتعديل الأسعار الحالية.</p>
+            <div class="admin-grid" id="admin-controls">
+                </div>
+            <button class="add-btn" style="margin-top:15px; background:var(--accent-orange)" onclick="savePrices()">حفظ جميع الأسعار الجديدة</button>
         </div>
     </div>
 
@@ -170,15 +165,49 @@
 
 <script>
     let cart = [];
-    function addItem(name, price, id, unit) {
-        const qty = document.getElementById(id).value;
+    
+    // قائمة بجميع معرفات الأسعار لتسهيل التحكم بها
+    const priceIds = ['price-apple', 'price-orange', 'price-banana', 'price-zahi', 'price-shampoo', 'price-powder', 'price-milk', 'price-cheese', 'price-yogurt'];
+
+    // تحميل الأسعار عند فتح الصفحة
+    window.onload = function() {
+        priceIds.forEach(id => {
+            const savedPrice = localStorage.getItem(id);
+            if (savedPrice) {
+                document.getElementById(id).innerText = savedPrice;
+            }
+            // توليد واجهة الإدارة
+            const productName = document.getElementById(id).parentElement.parentElement.querySelector('h4').innerText;
+            document.getElementById('admin-controls').innerHTML += `
+                <div class="admin-item">
+                    ${productName}: <input type="number" id="admin-input-${id}" value="${document.getElementById(id).innerText}">
+                </div>
+            `;
+        });
+    };
+
+    function savePrices() {
+        priceIds.forEach(id => {
+            const newVal = document.getElementById(`admin-input-${id}`).value;
+            localStorage.setItem(id, newVal);
+            document.getElementById(id).innerText = newVal;
+        });
+        alert("تم تحديث الأسعار بنجاح!");
+    }
+
+    function addItem(name, priceId, qtyId, unit) {
+        const price = parseInt(document.getElementById(priceId).innerText);
+        const qty = document.getElementById(qtyId).value;
         cart.push({ name: `${name} (${qty} ${unit})`, price: qty * price });
         updateUI();
     }
-    function addFixedItem(name, price) {
+
+    function addFixedItem(name, priceId) {
+        const price = parseInt(document.getElementById(priceId).innerText);
         cart.push({ name: name, price: price });
         updateUI();
     }
+
     function updateUI() {
         const list = document.getElementById('cart-list');
         const totalElem = document.getElementById('total-price');
@@ -192,6 +221,7 @@
         totalElem.innerText = total.toLocaleString();
         btn.style.display = cart.length > 0 ? 'block' : 'none';
     }
+
     function openModal() { document.getElementById('checkoutModal').style.display = 'block'; }
     function closeModal() { document.getElementById('checkoutModal').style.display = 'none'; document.getElementById('address-section').style.display='none'; }
     function showAddressInput() { document.getElementById('address-section').style.display = 'block'; }
